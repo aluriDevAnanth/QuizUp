@@ -8,6 +8,7 @@ const initialValues = {
   name: '',
   des: '',
   publicc: '',
+  nextDisabled: '',
   start: '',
   exp: '',
   subSec: [{
@@ -94,7 +95,7 @@ const validationSchema = Yup.object().shape({
               que: Yup.array().of(
                 Yup.object().shape({
                   que: Yup.string().required('Question is required'),
-                  options: Yup.array().of(Yup.string()).min(2, 'At least two options are required'),
+                  options: Yup.array().of(Yup.string()).required('This Option is required'),
                   corr: Yup.string().required('Correct answer is required')
                 })
               )
@@ -293,29 +294,34 @@ export default function AddCourse({ curr, setCurr, setView }) {
                 <div className="form-floating mb-3 flex-fill">
                   <Field className="form-control" name='name' id='name' type="text" />
                   <label htmlFor="name">Course name</label>
-                  <ErrorMessage name="name" />
+                  <ErrorMessage className="text-danger" component="p" name="name" />
                 </div>
                 <div className="form-floating mb-3 flex-fill">
                   <Field className="form-control" as="textarea" name='des' id='des' type="textarea" />
                   <label htmlFor="des">Course Des</label>
-                  <ErrorMessage name="des" />
+                  <ErrorMessage className="text-danger" component="p" name="des" />
                 </div>
               </div>
               <div className='d-flex gap-3'>
                 <div className="form-floating mb-3">
                   <Field className="form-control" name='start' id='start' type="datetime-local" />
                   <label htmlFor="start">Course Start Time</label>
-                  <ErrorMessage name="start" />
+                  <ErrorMessage className="text-danger" component="p" name="start" />
                 </div>
                 <div className="form-floating mb-3">
                   <Field className="form-control" name='exp' id='exp' type="datetime-local" />
                   <label htmlFor="exp">Course End Time</label>
-                  <ErrorMessage name="exp" />
+                  <ErrorMessage className="text-danger" component="p" name="exp" />
                 </div>
                 <div className="form-check mb-3">
                   <Field className="form-check-input" name='publicc' id='publicc' type="checkbox" />
                   <label htmlFor="publicc">Is Course Public?</label>
-                  <ErrorMessage name="publicc" />
+                  <ErrorMessage className="text-danger" component="p" name="publicc" />
+                </div>
+                <div className="form-check mb-3">
+                  <Field className="form-check-input" name='nextDisabled' id='nextDisabled' type="checkbox" />
+                  <label htmlFor="nextDisabled">Next Disabled</label>
+                  <ErrorMessage className="text-danger" component="p" name="nextDisabled" />
                 </div>
               </div>
 
@@ -333,20 +339,20 @@ export default function AddCourse({ curr, setCurr, setView }) {
                           <Accordion.Header>Subsection {i + 1}</Accordion.Header>
                           <Accordion.Body>
                             <div className='d-flex gap-3'>
-                              <div className='form-floating mb-3'>
+                              <div className='form-floating mb-3 flex-fill'>
                                 <Field className="form-control" name={`subSec[${i}].name`} id={`subSec[${i}].name`} type="text" />
                                 <label htmlFor={`subSec[${i}].name`}>Subsection name</label>
-                                <ErrorMessage name={`subSec[${i}].name`} />
+                                <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].name`} />
                               </div>
                               <div className='form-floating mb-3'>
                                 <Field className="form-control" name={`subSec[${i}].start`} id={`subSec[${i}].start`} type="datetime-local" />
                                 <label htmlFor={`subSec[${i}].start`}>Subsection Start</label>
-                                <ErrorMessage name={`subSec[${i}].start`} />
+                                <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].start`} />
                               </div>
                               <div className='form-floating mb-3'>
                                 <Field className="form-control" name={`subSec[${i}].exp`} id={`subSec[${i}].exp`} type="datetime-local" />
                                 <label htmlFor={`subSec[${i}].exp`}>Subsection Exp</label>
-                                <ErrorMessage name={`subSec[${i}].exp`} />
+                                <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].exp`} />
                               </div>
                               <div className='d-flex align-items-center'>
                                 {i > 0 && <Button variant="warning" className='me-3' onClick={() => swap(i, i - 1)}>↑</Button>}
@@ -369,34 +375,34 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                           <Accordion.Header>Quiz {ii + 1}</Accordion.Header>
                                           <Accordion.Body>
                                             <div className='d-flex gap-3'>
-                                              <div >
+                                              <div className='flex-fill'>
                                                 <div className='d-flex gap-3'>
                                                   <div className='form-floating mb-3 flex-fill'>
                                                     <Field type="text" className="form-control" name={`subSec[${i}].quizzes[${ii}].name`} id={`subSec[${i}].quizzes[${ii}].name`} />
                                                     <label htmlFor={`subSec[${i}].quizzes[${ii}].name`}>Quiz Name</label>
-                                                    <ErrorMessage name={`subSec[${i}].quizzes[${ii}].name`} />
+                                                    <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].name`} />
                                                   </div>
-                                                  <div className='form-floating mb-3 flex-fill'>
+                                                  <div className='form-floating mb-3 '>
                                                     <Field className="form-control" name={`subSec[${i}].quizzes[${ii}].startDate`} id={`subSec[${i}].quizzes[${ii}].startDate`} type="datetime-local" />
                                                     <label htmlFor={`subSec[${i}].quizzes[${ii}].startDate`}>Quiz Start</label>
-                                                    <ErrorMessage name={`subSec[${i}].quizzes[${ii}].startDate`} />
+                                                    <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].startDate`} />
                                                   </div>
                                                 </div>
                                                 <div className='d-flex gap-3'>
-                                                  <div className='form-floating mb-3 flex-fill'>
+                                                  <div className='form-floating mb-3  '>
                                                     <Field type="datetime-local" className="form-control" name={`subSec[${i}].quizzes[${ii}].compDate`} id={`subSec[${i}].quizzes[${ii}].compDate`} />
                                                     <label htmlFor={`subSec[${i}].quizzes[${ii}].compDate`}>Quiz Exp</label>
-                                                    <ErrorMessage name={`subSec[${i}].quizzes[${ii}].compDate`} />
+                                                    <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].compDate`} />
                                                   </div>
-                                                  <div className='form-floating mb-3 flex-fill'>
+                                                  <div className='form-floating mb-3  '>
                                                     <Field type="number" className="form-control" name={`subSec[${i}].quizzes[${ii}].dura`} id={`subSec[${i}].quizzes[${ii}].dura`} />
                                                     <label htmlFor={`subSec[${i}].quizzes[${ii}].dura`}>Quiz Dura In Mins</label>
-                                                    <ErrorMessage name={`subSec[${i}].quizzes[${ii}].dura`} />
+                                                    <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].dura`} />
                                                   </div>
-                                                  <div className='form-floating mb-3 flex-fill'>
+                                                  <div className='form-floating mb-3 '>
                                                     <Field type="number" className="form-control" name={`subSec[${i}].quizzes[${ii}].totalMarks`} id={`subSec[${i}].quizzes[${ii}].totalMarks`} />
                                                     <label htmlFor={`subSec[${i}].quizzes[${ii}].totalMarks`}>Quiz Total Marks</label>
-                                                    <ErrorMessage name={`subSec[${i}].quizzes[${ii}].totalMarks`} />
+                                                    <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].totalMarks`} />
                                                   </div>
                                                 </div>
                                               </div>
@@ -424,12 +430,12 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                             <div className='form-floating mb-3 flex-fill'>
                                                               <Field type="number" className="form-control" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].dura`} id={`subSec[${i}].quizzes[${ii}].qss[${iii}].dura`} />
                                                               <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].dura`}>Qss Dura</label>
-                                                              <ErrorMessage name={`subSec[${i}].quizzes[${ii}].qss[${iii}].dura`} />
+                                                              <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].dura`} />
                                                             </div>
                                                             <div className='form-floating mb-3 flex-fill'>
                                                               <Field type="number" className="form-control" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].totalMarks`} id={`subSec[${i}].quizzes[${ii}].qss[${iii}].totalMarks`} />
                                                               <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].totalMarks`}>Qss Total Marks</label>
-                                                              <ErrorMessage name={`subSec[${i}].quizzes[${ii}].qss[${iii}].totalMarks`} />
+                                                              <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].totalMarks`} />
                                                             </div>
                                                             <div className='d-flex align-items-center'>
                                                               {iii > 0 && <Button variant="warning" className='me-3' onClick={() => qssSwap(iii, iii - 1)}>↑</Button>}
@@ -446,12 +452,8 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                                 const { form, insert, remove, swap } = queProps;
                                                                 const { values } = form;
                                                                 const queArray = values.subSec[i].quizzes[ii].qss[iii].que;
-
-                                                                //console.log('queArray:', queArray);
-
                                                                 return (
                                                                   <div>
-                                                                    {/* Check if queArray is an array before mapping */}
                                                                     {Array.isArray(queArray) && queArray.map((queItem, iiii) => (
                                                                       <Accordion key={iiii} defaultActiveKey={[0]} alwaysOpen>
                                                                         <Accordion.Item eventKey={iiii}>
@@ -459,16 +461,19 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                                           <Accordion.Body>
                                                                             <div className=''>
                                                                               <div className='d-flex gap-3'>
-                                                                                <div className='form-floating mb-3 flex-fill'>
-                                                                                  <Field type="text" className="form-control" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`} id={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`} />
-                                                                                  <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`}> Que</label>
-                                                                                  <ErrorMessage name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`} />
+                                                                                <div className='flex-fill d-flex flex-column'>
+                                                                                  <div className='form-floating mb-3 flex-fill'>
+                                                                                    <Field type="text" className="form-control" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`} id={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`} />
+                                                                                    <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`}> Que</label>
+                                                                                    <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`} />
+                                                                                  </div>
+                                                                                  <div className='form-floating mb-3 flex-fill'>
+                                                                                    <Field type="text" className="form-control" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].corr`} id={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].corr`} />
+                                                                                    <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].corr`}> Corr as same as option(copy paste the option)</label>
+                                                                                    <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].corr`} />
+                                                                                  </div>
                                                                                 </div>
-                                                                                <div className='form-floating mb-3 flex-fill'>
-                                                                                  <Field type="text" className="form-control" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].corr`} id={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].corr`} />
-                                                                                  <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].corr`}> Corr as same as option(copy paste the option)</label>
-                                                                                  <ErrorMessage name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].que`} />
-                                                                                </div>
+
                                                                                 <div className='d-flex align-items-center'>
                                                                                   {iiii > 0 && <Button variant="warning" className='me-3' onClick={() => swap(iiii, iiii - 1)}>↑</Button>}
                                                                                   {iiii < queArray.length - 1 && <Button variant="warning" className='me-3' onClick={() => swap(iiii, iiii + 1)}>↓</Button>}
@@ -489,8 +494,8 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                                                     return (
                                                                                       <div className="">
                                                                                         {Array.isArray(optionsArray) && optionsArray.map((option, opIndex) => (
-                                                                                          <div className="col-12" key={opIndex}>
-                                                                                            <div className="form-floating mb-3 d-flex gap-3">
+                                                                                          <div className='mb-3' key={opIndex}><div className="col-12 " >
+                                                                                            <div className="form-floating d-flex gap-3">
                                                                                               <Field
                                                                                                 type="text"
                                                                                                 className="form-control"
@@ -498,7 +503,6 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                                                                 id={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].options[${opIndex}]`}
                                                                                               />
                                                                                               <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].options[${opIndex}]`}>Option {opIndex + 1}</label>
-                                                                                              <ErrorMessage name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].options[${opIndex}]`} />
                                                                                               <div className='d-flex align-items-center gap-3'>
                                                                                                 {opIndex > 0 && <Button variant="warning" className='' onClick={() => swap(opIndex, opIndex - 1)}>↑</Button>}
                                                                                                 {opIndex < optionsArray.length - 1 && <Button variant="warning" className='' onClick={() => swap(opIndex, opIndex + 1)}>↓</Button>}
@@ -509,8 +513,8 @@ export default function AddCourse({ curr, setCurr, setView }) {
 
                                                                                               </div>
                                                                                             </div>
-
                                                                                           </div>
+                                                                                            <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].options[${opIndex}]`} /></div>
                                                                                         ))}
                                                                                       </div>
 

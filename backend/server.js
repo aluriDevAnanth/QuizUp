@@ -13,6 +13,7 @@ const userQuizRou = require('./routes/user/userQuizRou');
 //Routes imports -teacher
 const teacherRou = require("./routes/teacher/teacherRou")
 const teacherCourseRou = require("./routes/teacher/teacherCourseRou")
+const teacherRFRRou = require("./routes/teacher/teacherRFRRou")
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/user/rfr', userRFRRou);
 //use teacher routes
 app.use('/teacher', teacherRou);
 app.use('/teacher/course', teacherCourseRou);
+app.use('/teacher/rfr', teacherRFRRou);
 
 const port = 3000;
 const start = async () => {

@@ -26,7 +26,7 @@ function App() {
   const { auth, user } = useContext(AuthCon)
   //console.log(auth, user)
   return (
-    <>
+    <div data-bs-theme="dark">
       <Routes>
         <Route path='/' element={auth === undefined ? <UserSignup /> : <></>} />
       </Routes>
@@ -54,7 +54,7 @@ function App() {
         </Routes>
       </>}
 
-    </>
+    </div>
 
   )
 }

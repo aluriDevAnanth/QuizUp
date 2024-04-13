@@ -23,6 +23,7 @@ router.get('/getAllMyCourses', async (req, res) => {
 
   if (teacher !== null) {
     const courses = await Course.find({ teacher: userId });
+    console.log(1111);
     res.status(200).json({ success: true, data: courses });
   } else {
     res.status(401).json({ success: false, message: 'Invalid authentication' });
