@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 export default function quizCard(props) {
     const quiz = props.data;
+
     return (
-        <div className="card p-0 rounded-3" style={{ width: "18rem" }}>
+        <div className="card p-0 rounded-3 text-bg-dark" style={{ width: "18rem" }}>
             <img src="https://placehold.co/700x400" className="card-img-top" alt="..." />
             <div className="card-body">
                 <h5 className="card-title fs-5 fw-bolder">{quiz.name}</h5>

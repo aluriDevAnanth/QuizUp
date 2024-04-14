@@ -74,4 +74,30 @@ router.put('/editCourse', async (req, res) => {
 
 });
 
-module.exports = router;
+router.put('/editStudents', async (req, res) => {
+  try {
+    let token;
+    const authHeader = req.headers["authorization"];
+    if (authHeader !== undefined) {
+      token = authHeader.split(" ")[1];
+    }
+    const { userId } = jwt.verify(token, 'qwertyuiop');
+    let teacher = await Teacher.findOne({ _id: userId });
+
+    if (teacher !== null) {
+      let { users, curr } = req.body
+      users = users.split(',');
+      let q = await Course.findOne({ _id: curr._id });
+      q.users = users;
+      const course = await Course.findOneAndUpdate({ _id: curr._id }, { ...q }, { new: true });
+      res.status(200).json({ success: true, data: { course } });
+    } else {
+      res.status(401).json({ success: false, message: 'Invalid authentication' });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+});
+
+module.exports = router; 

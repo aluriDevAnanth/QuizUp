@@ -18,6 +18,7 @@ const quizSchema = new mongoose.Schema({
     qss: [quizSubSecSchema],
     name: String,
     des: String,
+    prevDisabled: Boolean,
     score: String,
     HighScore: String,
     avgScore: String,

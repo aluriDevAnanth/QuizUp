@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
-import { Button, Accordion, AccordionHeader, AccordionBody } from 'react-bootstrap';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Accordion, AccordionHeader, AccordionBody } from 'react-bootstrap';
 import * as Yup from 'yup';
 import AddCourse from './components/AddCourse';
 import AuthCon from '../../context/AuthPro';
+import { Modal } from 'react-responsive-modal';
+import { JsonView, allExpanded, defaultStyles } from 'react-json-view-lite';
+import 'react-json-view-lite/dist/index.css';
 
 /* const initialValues = {
 	name: '',
@@ -227,6 +230,26 @@ export default function YourCourses() {
 	const [view, setView] = useState(11)
 	const [courses, setCourses] = useState()
 	const [curr, setCurr] = useState()
+	const [open, setOpen] = useState()
+
+	const onOpenModal = () => { setOpen(true); }
+	const onCloseModal = () => { setOpen(false); }
+
+	async function editStudents({ users }) {
+		try {
+			const response = await fetch(`http://localhost:3000/teacher/course/editStudents`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${auth}`
+				},
+				body: JSON.stringify({ users, curr })
+			});
+			const res = await response.json();
+		} catch (error) {
+			console.error('Error fetching courses:', error);
+		}
+	}
 
 	async function fetchAllMyCourses() {
 		try {
@@ -240,14 +263,12 @@ export default function YourCourses() {
 
 			const res = await response.json();
 			setCourses(res.data);
-			console.log(res);
 		} catch (error) {
 			console.error('Error fetching courses:', error);
 		}
 	}
 
 	useEffect(() => {
-		console.log('view changed');
 		fetchAllMyCourses();
 	}, [view]);
 
@@ -264,12 +285,13 @@ export default function YourCourses() {
 			</div>
 			{view === 11 && <div>
 				{courses && courses.map((q, i) => {
-					return <Accordion key={i} value={q._id} data-bs-theme="dark">
+					return <Accordion key={i} value={q._id} data-bs-theme="dark" alwaysOpen>
 						<AccordionHeader>{q.name}</AccordionHeader>
 						<AccordionBody>
 							<div style={{ position: 'relative' }}>
-								<pre className='bg-dark text-white'>{JSON.stringify(q, null, 2)}</pre>
+								<JsonView data={q} shouldExpandNode={allExpanded} style={{ ...defaultStyles, minHeigth: "100px" }} />
 								<button className='btn btn-secondary me-3 mt-3' onClick={() => { setView(22); setCurr(q) }} style={{ position: 'absolute', top: '5px', right: '5px' }} > Edit </button>
+								<button className='btn btn-secondary me-3 mt-3' onClick={(e) => { onOpenModal(); setCurr(q) }} style={{ position: 'absolute', top: '5px', right: '70px' }} > Edit Students </button>
 							</div>
 						</AccordionBody>
 					</Accordion>
@@ -278,6 +300,25 @@ export default function YourCourses() {
 			{view === 22 && <div>
 				<AddCourse curr={curr} setCurr={setCurr} setView={setView} />
 			</div>}
+			{curr && <Modal open={open} onClose={onCloseModal} center>
+				<div style={{ color: "black" }} className='mt-4 d-flex flex-column gap-3' >
+					<p className='fs-4 fw-bold'>Edit Students</p>
+					<p className=' '>Edit Students through email with comma seperated without any spaces</p>
+					<Formik initialValues={{ users: curr.users.join(',') }} onSubmit={values => { editStudents(values); onCloseModal() }} >
+						{({ errors, touched }) => (
+							<Form className='d-flex flex-column gap-3'>
+								<div className='d-flex  flex-column  gap-3'>
+									<Field as="textarea" className="form-control" name="users" />
+									<ErrorMessage component="p" className='text-danger ' name="users" />
+								</div>
+								<div>
+									<button className='btn btn-primary' type="submit">Submit</button>
+								</div>
+							</Form>
+						)}
+					</Formik>
+				</div>
+			</Modal >}
 		</div >
 	);
 }

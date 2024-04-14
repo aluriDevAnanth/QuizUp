@@ -30,7 +30,7 @@ export default function TeacherHeader() {
               <Link className="nav-link active" aria-current="page" to="/teacher/rfr/">Your RFRs</Link>
             </li>
           </ul> : <></>}
-
+          {auth === undefined ? <></> : <Link className="nav-link active me-3" aria-current="page" to="settings">Settings</Link>}
           {auth === undefined ? <></> : <button className='btn btn-danger' onClick={handleLogout} >LogOut</button>}
         </div>
       </div>

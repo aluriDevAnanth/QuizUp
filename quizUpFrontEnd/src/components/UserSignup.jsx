@@ -97,6 +97,7 @@ const userSignup = () => {
                 setShowErr(true);
             }
         } catch (error) {
+            console.log(error);
             setErr(error.errors.join(', '));
             setShowErr(true);
         }
@@ -106,7 +107,7 @@ const userSignup = () => {
         <div className='d-flex justify-content-center align-items-center mt-5 bgi' style={{ marginTop: '200px' }}>
             {sign && (
                 <div>
-                    <form onSubmit={handleSignup} className="box" style={{ width: '26rem' }}>
+                    <form onSubmit={handleSignup} className="box bg-dark text-white" style={{ width: '26rem' }}>
                         <h1 className='h1 mb-3'>Sign Up</h1>
 
                         <div className="form-floating mb-3">
@@ -144,9 +145,9 @@ const userSignup = () => {
                             <div className=' '>
                                 <button className="btn btn-primary">Sign Up</button>
                             </div>
-                            <a onClick={toggle} className=' justify-content-end'>
+                            <button onClick={toggle} className='btn btn-secondary justify-content-end'>
                                 Already have an account
-                            </a>
+                            </button>
                         </div>
 
                     </form>
@@ -155,7 +156,7 @@ const userSignup = () => {
 
             {!sign && (
                 <div>
-                    <form onSubmit={handleLogin} className="box" style={{ width: '26rem' }}>
+                    <form onSubmit={handleLogin} className="box bg-dark text-white" style={{ width: '26rem' }}>
                         <h1 className='h1 mb-3'>Log In  </h1>
                         <div className="form-floating mb-3">
                             <input name='email' type="email" className="form-control" id="floatingInput" placeholder="name@example.com" />
@@ -175,9 +176,9 @@ const userSignup = () => {
                             <div className=' '>
                                 <button className="btn btn-primary">Log In</button>
                             </div>
-                            <a onClick={toggle} className=' justify-content-end'>
+                            <button onClick={toggle} className='btn btn-secondary justify-content-end'>
                                 Create an acccount
-                            </a>
+                            </button>
                         </div>
                     </form>
                 </div>

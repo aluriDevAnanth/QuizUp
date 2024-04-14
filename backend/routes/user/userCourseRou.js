@@ -10,25 +10,29 @@ const User = require('../../models/user/User');
 router.use(express.json());
 
 router.get('/allMyCourses', async (req, res) => {
-    let token;
-    const authHeader = req.headers["authorization"];
-    if (authHeader !== undefined) {
-        token = authHeader.split(" ")[1];
-    }
-    const { userId } = jwt.verify(token, 'qwertyuiop');
-    let user = null;
-    user = await User.find({ _id: userId });
-    if (user !== null) {
-        const courses = await Course.find();
-        res.json({
-            success: true,
-            data: { courses }
-        });
-    } else {
-        res.json({
-            success: false,
-            error: 'failed auth'
-        });
+    try {
+        let token;
+        const authHeader = req.headers["authorization"];
+        if (authHeader !== undefined) {
+            token = authHeader.split(" ")[1];
+        }
+        const { userId } = jwt.verify(token, 'qwertyuiop');
+        let user = await User.findOne({ _id: userId });
+        console.log(user);
+        if (user !== null) {
+            const courses = await Course.find({ users: user.email }).sort('publicc');
+            res.json({
+                success: true,
+                data: { courses }
+            });
+        } else {
+            res.json({
+                success: false,
+                error: 'failed auth'
+            });
+        }
+    } catch (error) {
+        console.log(error);
     }
 });
 
@@ -170,5 +174,33 @@ router.post('/:cid/:ssid/:qid/submit', async (req, res) => {
     }
 });
 
+router.post('/addStudent', async (req, res) => {
+    try {
+        console.log(req.body);
+        let token;
+        const authHeader = req.headers["authorization"];
+        if (authHeader !== undefined) {
+            token = authHeader.split(" ")[1];
+        }
+
+        const { userId } = jwt.verify(token, 'qwertyuiop');
+        let user = await User.findOne({ _id: userId });
+
+        if (user !== null) {
+            const { email, courseId } = req.body;
+            let c = await Course.findOne({ _id: courseId });
+            if (!c.users.includes(email)) {
+                c.users.push(email);
+            }
+            let cc = await Course.findOneAndUpdate({ _id: courseId }, c, { new: true });
+            res.status(201).json({ success: true, data: { course: cc } });
+        } else {
+            res.status(401).json({ success: false, message: 'Invalid authentication' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
 
 module.exports = router;

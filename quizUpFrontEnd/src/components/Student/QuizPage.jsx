@@ -10,7 +10,6 @@ const QuizPage = (props) => {
     const [quiz, setQuiz] = useState(undefined)
     const [currQ, setCurrQ] = useState({ sec: 0, que: 0, op: -1 })
     const [corr, setCorr] = useState({})
-    const [table, setTable] = useState(undefined)
 
     const fetchQuiz = async () => {
         try {
@@ -23,8 +22,8 @@ const QuizPage = (props) => {
             });
 
             const data = await res.json();
+            console.log(data);
             setQuiz(data.quiz)
-            //setCourses(data.data.courses);
         } catch (error) {
             console.error('Error fetching courses:', error);
         }
@@ -118,7 +117,6 @@ const QuizPage = (props) => {
 
             const data = await res.json();
             console.log(data)
-            //setCourses(data.data.courses);
         } catch (error) {
             console.error('Error fetching courses:', error);
         }
@@ -163,7 +161,7 @@ const QuizPage = (props) => {
                                     <button onClick={handleClear} className='btn btn-light'>Clear</button>
                                 </div>
                                 <div className="">
-                                    <button className="me-3 btn btn-light" onClick={prev} disabled={currQ.que === 0 && currQ.sec === 0}>Previous</button>
+                                    {!quiz.prevDisabled && <button className="me-3 btn btn-light" onClick={prev} disabled={currQ.que === 0 && currQ.sec === 0 && !prevDisabled}>Previous</button>}
                                     <button className=" btn btn-light" onClick={next} disabled={currQ.sec === quiz.qss.length - 1 && currQ.que === quiz.qss[currQ.sec].que.length - 1}>Next</button>
                                 </div>
                             </div>
@@ -176,12 +174,8 @@ const QuizPage = (props) => {
                             <div className=" container-fluid">
                                 <div className='row gap-2'>
                                     {quiz.qss[currQ.sec].que.map((q, index) => (
-                                        <button key={index} onClick={handleQ} data={index}
-                                            className={`btn col-6 btn-light displayNumbers ${index === currQ.que ? 'active' : ''} `}>
-                                            {index + 1}
-                                        </button>
+                                        <button key={index} onClick={handleQ} disabled={quiz.prevDisabled} data={index} className={`btn col-6 btn-light displayNumbers ${index === currQ.que ? 'active' : ''} `}> {index + 1} </button>
                                     ))}
-
                                 </div>
                             </div>
                             <div className="mt-5 submit-button-container d-flex justify-content-center">
@@ -191,9 +185,6 @@ const QuizPage = (props) => {
                     </div>
                 </div >
             </div>
-
-
-
             : <></>
     );
 }

@@ -142,7 +142,7 @@ export default function YourRFRs() {
                     {JSON.stringify(q, null, 2)}
                   </pre>
                   <button className='btn btn-secondary me-3 mt-3' onClick={() => { setSec(2); setCurr(q) }} style={{ position: 'absolute', top: '5px', right: '10px' }} > Edit </button>
-                  <Button data={q._id} className='btn btn-secondary me-3 mt-3' style={{ position: 'absolute', top: '5px', right: '70px' }} onClick={(e) => { onOpenModal(e); setCurr1(q._id) }}> Add Students </Button>
+                  <Button data={q._id} className='btn btn-secondary me-3 mt-3' style={{ position: 'absolute', top: '5px', right: '70px' }} onClick={(e) => { onOpenModal(e); setCurr1(q._id) }}> Edit Students </Button>
                 </div>
               </Accordion.Body>
             </Accordion.Item>

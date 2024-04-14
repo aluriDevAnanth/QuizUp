@@ -7,8 +7,7 @@ import AuthCon from '../../../context/AuthPro';
 const initialValues = {
   name: '',
   des: '',
-  publicc: '',
-  nextDisabled: '',
+  publicc: false,
   start: '',
   exp: '',
   subSec: [{
@@ -17,6 +16,7 @@ const initialValues = {
     exp: '',
     quizzes: [{
       name: '',
+      prevDisabled: false,
       qss: [{
         dura: 0,
         totalMarks: 0,
@@ -318,11 +318,6 @@ export default function AddCourse({ curr, setCurr, setView }) {
                   <label htmlFor="publicc">Is Course Public?</label>
                   <ErrorMessage className="text-danger" component="p" name="publicc" />
                 </div>
-                <div className="form-check mb-3">
-                  <Field className="form-check-input" name='nextDisabled' id='nextDisabled' type="checkbox" />
-                  <label htmlFor="nextDisabled">Next Disabled</label>
-                  <ErrorMessage className="text-danger" component="p" name="nextDisabled" />
-                </div>
               </div>
 
             </div>
@@ -354,11 +349,17 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                 <label htmlFor={`subSec[${i}].exp`}>Subsection Exp</label>
                                 <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].exp`} />
                               </div>
-                              <div className='d-flex align-items-center'>
-                                {i > 0 && <Button variant="warning" className='me-3' onClick={() => swap(i, i - 1)}>↑</Button>}
-                                {i < subSec.length - 1 && <Button variant="warning" className='me-3' onClick={() => swap(i, i + 1)}>↓</Button>}
-                                <Button variant="primary" onClick={() => insert(i + 1, { name: '', start: '', exp: '', quizzes: [{ name: '', score: 0, HighScore: 0, avgScore: 0, startDate: '', compDate: '', dura: 0, totalMarks: 0, qss: [{ dura: '', totalMarks: "" }] }] })}>+</Button>
-                                {i > 0 && <Button variant="danger" className='ms-3' onClick={() => remove(i)}>-</Button>}
+                              <div className='d-flex align-items-center gap-2'>
+                                <Button variant="primary" onClick={() => insert(i + 1, {
+                                  name: '', start: '', exp: '', quizzes: [{
+                                    name: '', score: 0, HighScore: 0, avgScore: 0, startDate: '', compDate: '', dura: 0, totalMarks: 0, qss: [{
+                                      dura: 0, totalMarks: 0, que: [{ que: "", options: [''], corr: '' }]
+                                    }]
+                                  }]
+                                })}>+</Button>
+                                {i > 0 && <Button variant="warning" onClick={() => swap(i, i - 1)}>↑</Button>}
+                                {i < subSec.length - 1 ? <Button variant="warning" onClick={() => swap(i, i + 1)}>↓</Button> : <></>}
+                                {i > 0 && <Button variant="danger" onClick={() => remove(i)}>-</Button>}
                               </div>
                             </div>
                             <div >
@@ -387,6 +388,12 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                     <label htmlFor={`subSec[${i}].quizzes[${ii}].startDate`}>Quiz Start</label>
                                                     <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].startDate`} />
                                                   </div>
+
+                                                  <div className="form-check mb-3">
+                                                    <Field className="form-check-input" name={`subSec[${i}].quizzes[${ii}].prevDisabled`} id={`subSec[${i}].quizzes[${ii}].prevDisabled`} type="checkbox" />
+                                                    <label htmlFor={`subSec[${i}].quizzes[${ii}].prevDisabled`}>Previous   Disabled</label>
+                                                    <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].prevDisabled`} />
+                                                  </div>
                                                 </div>
                                                 <div className='d-flex gap-3'>
                                                   <div className='form-floating mb-3  '>
@@ -406,13 +413,15 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                   </div>
                                                 </div>
                                               </div>
-                                              <div className='d-flex align-items-center'>
-                                                {ii > 0 && <Button variant="warning" className='me-3' onClick={() => swap(ii, ii - 1)}>↑</Button>}
-                                                {ii < quizzes.length - 1 && <Button variant="warning" className='me-3' onClick={() => swap(ii, ii + 1)}>↓</Button>}
-
-                                                <Button variant="primary" onClick={() => insert(i + 1, { name: "", score: 0, HighScore: 0, avgScore: 0, startDate: "", compDate: "", dura: 0, totalMarks: 0, qss: [{ dura: "", totalMarks: "" }] })}>+</Button>
-
-                                                {ii > 0 && <Button variant="danger" className='ms-3' onClick={() => remove(ii)}>-</Button>}
+                                              <div className='d-flex align-items-center gap-2'>
+                                                <Button variant="primary" onClick={() => insert(i + 1, {
+                                                  name: "", score: 0, HighScore: 0, avgScore: 0, startDate: "", compDate: "", dura: 0, totalMarks: 0, qss: [{
+                                                    dura: 0, totalMarks: 0, que: [{ que: "", options: [''], corr: '' }]
+                                                  }]
+                                                })}>+</Button>
+                                                {ii > 0 && <Button variant="warning" onClick={() => swap(ii, ii - 1)}>↑</Button>}
+                                                {ii < quizzes.length - 1 && <Button variant="warning" onClick={() => swap(ii, ii + 1)}>↓</Button>}
+                                                {ii > 0 && <Button variant="danger" onClick={() => remove(ii)}>-</Button>}
                                               </div>
                                             </div>
                                             <FieldArray name={`subSec[${i}].quizzes[${ii}].qss`}>
@@ -437,13 +446,13 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                               <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].totalMarks`}>Qss Total Marks</label>
                                                               <ErrorMessage className="text-danger" component="p" name={`subSec[${i}].quizzes[${ii}].qss[${iii}].totalMarks`} />
                                                             </div>
-                                                            <div className='d-flex align-items-center'>
-                                                              {iii > 0 && <Button variant="warning" className='me-3' onClick={() => qssSwap(iii, iii - 1)}>↑</Button>}
-                                                              {iii < qss.length - 1 && <Button variant="warning" className='me-3' onClick={() => qssSwap(iii, iii + 1)}>↓</Button>}
+                                                            <div className='d-flex align-items-center gap-2'>
                                                               <Button variant="primary" onClick={() => qssInsert(iii + 1, {
                                                                 dura: 0, totalMarks: 0, que: [{ que: "", options: [''], corr: '' }]
                                                               })}>+</Button>
-                                                              <Button variant="danger" className='ms-3' onClick={() => qssRemove(iii)}>-</Button>
+                                                              {iii > 0 && <Button variant="warning" onClick={() => qssSwap(iii, iii - 1)}>↑</Button>}
+                                                              {iii < qss.length - 1 && <Button variant="warning" onClick={() => qssSwap(iii, iii + 1)}>↓</Button>}
+                                                              <Button variant="danger" onClick={() => qssRemove(iii)}>-</Button>
                                                             </div>
                                                           </div>
                                                           <div>
@@ -457,7 +466,7 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                                     {Array.isArray(queArray) && queArray.map((queItem, iiii) => (
                                                                       <Accordion key={iiii} defaultActiveKey={[0]} alwaysOpen>
                                                                         <Accordion.Item eventKey={iiii}>
-                                                                          <Accordion.Header>Que {iiii}</Accordion.Header>
+                                                                          <Accordion.Header>Que {iiii + 1}</Accordion.Header>
                                                                           <Accordion.Body>
                                                                             <div className=''>
                                                                               <div className='d-flex gap-3'>
@@ -474,14 +483,13 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                                                   </div>
                                                                                 </div>
 
-                                                                                <div className='d-flex align-items-center'>
-                                                                                  {iiii > 0 && <Button variant="warning" className='me-3' onClick={() => swap(iiii, iiii - 1)}>↑</Button>}
-                                                                                  {iiii < queArray.length - 1 && <Button variant="warning" className='me-3' onClick={() => swap(iiii, iiii + 1)}>↓</Button>}
+                                                                                <div className='d-flex align-items-center gap-2'>
                                                                                   <Button variant="primary" onClick={() => insert(iiii + 1, {
-                                                                                    que: "",
-                                                                                    options: [''], corr: ''
+                                                                                    que: "", options: [''], corr: ''
                                                                                   })}>+</Button>
-                                                                                  <Button variant="danger" className='ms-3' onClick={() => remove(iiii)}>-</Button>
+                                                                                  {iiii > 0 ? <Button variant="warning" onClick={() => swap(iiii, iiii - 1)}>↑</Button> : <></>}
+                                                                                  {iiii < queArray.length - 1 ? <Button variant="warning" onClick={() => swap(iiii, iiii + 1)}>↓</Button> : <></>}
+                                                                                  <Button variant="danger" onClick={() => remove(iiii)}>-</Button>
                                                                                 </div>
                                                                               </div>
                                                                               <div className="border border-5 rounded-5 border-secondary p-3">
@@ -503,8 +511,8 @@ export default function AddCourse({ curr, setCurr, setView }) {
                                                                                                 id={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].options[${opIndex}]`}
                                                                                               />
                                                                                               <label htmlFor={`subSec[${i}].quizzes[${ii}].qss[${iii}].que[${iiii}].options[${opIndex}]`}>Option {opIndex + 1}</label>
-                                                                                              <div className='d-flex align-items-center gap-3'>
-                                                                                                {opIndex > 0 && <Button variant="warning" className='' onClick={() => swap(opIndex, opIndex - 1)}>↑</Button>}
+                                                                                              <div className='d-flex align-items-center gap-2'>
+                                                                                                {opIndex > 0 && <Button variant="warning" onClick={() => swap(opIndex, opIndex - 1)}>↑</Button>}
                                                                                                 {opIndex < optionsArray.length - 1 && <Button variant="warning" className='' onClick={() => swap(opIndex, opIndex + 1)}>↓</Button>}
                                                                                                 <Button variant="primary" onClick={() => insert(opIndex + 1, '')}>+</Button>
                                                                                                 {opIndex > 0 && (

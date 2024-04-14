@@ -11,7 +11,7 @@ export default function CourseCard(props) {
     const { _id, name, des, publicc } = props;
 
     return (
-        <div className="card mt-4 rounded-3" style={{ width: "18rem", maxHeight: '400px' }}>
+        <div data-bs-theme="dark" className="card mt-4 rounded-3 text-bg-dark" style={{ width: "18rem", maxHeight: '400px' }}>
             <img src="https://placehold.co/700x400" className="card-img-top" alt="..." />
             <div className="card-body">
                 <h5 className="card-title fs-5 fw-bolder">{name}</h5>

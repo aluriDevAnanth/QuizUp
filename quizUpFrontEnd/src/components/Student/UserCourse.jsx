@@ -8,7 +8,7 @@ export default function UserCourse() {
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch('http://localhost:3000/user/course/allMyCourses', {
+      const response = await fetch('http://localhost:3000/user/course/allMyCourses', {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -16,9 +16,9 @@ export default function UserCourse() {
         },
       });
 
-      const data = await res.json();
-      setCourses(data.data.courses);
-      //console.log(data.data);
+      const res = await response.json();
+      setCourses(res.data.courses);
+      console.log(res);
     } catch (error) {
       console.error('Error fetching courses:', error);
     }
@@ -33,7 +33,7 @@ export default function UserCourse() {
       <div className="row row-cols-auto gap-3 row-gap-5">
         {courses ? (
           courses.map((course, i) => (
-            course.publicc ? <div key={course._id} ><CourseCard key={course._id} {...course} /></div> : <div key={i}></div>
+            <div key={course._id} ><CourseCard key={course._id} {...course} /></div>
           ))
         ) : null}
       </div>

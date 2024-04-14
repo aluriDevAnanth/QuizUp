@@ -5,11 +5,20 @@ import CourseCard from './CourseCard';
 import QuizCard from './QuizCard';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import Slider from "react-slick";
 
 export default function Home() {
     const { user, auth } = useContext(AuthCon)
     const [publicCourse, setPublicCourse] = useState(null)
     const [publicRFRs, setPublicRFRs] = useState(null)
+
+    const settings = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 3
+    };
 
     async function fetchPublicCourses() {
         try {
@@ -64,35 +73,32 @@ export default function Home() {
 
     return (
         <div className='container-fluid mt-5'>
-            {user !== null ? <div className="mb-4 box ">
-                <div className='container'>
+            {user !== null ? <div className="mb-4 box bg-dark text-white">
+                <div className=''>
                     <h1 className="display-5 fw-bold mb-2 ">{`Hi, ${user.name}!`}</h1>
                     <p className="col-md-9 fs-4 mb-3">Welcome to QuizUp, go to Courses to complete them in time.</p>
                     <Link to='/user/course/' className="btn btn-primary btn-lg " type="button">Courses</Link>
                 </div>
             </div> : <></>}
-            {publicCourse ? <div className='box'>
+            {publicCourse ? <div className='box bg-dark text-white'>
                 <h1 className="display-5 fw-bold mb-2">Public Courses</h1>
                 <div className='container'>
-                    <AliceCarousel
-                        mouseTracking
-                        items={publicCourse}
-                        responsive={responsive}
-                        controlsStrategy="alternate"
-                    />
+                    <Slider {...settings}>
+                        {publicCourse.map((q, i) => {
+                            return <div key={i}>{q}</div>
+                        })}
+                    </Slider>
                 </div>
             </div> : <></>}
 
-            {publicRFRs !== null ? <div className='box mb-5'>
+            {publicRFRs !== null ? <div className='box mb-5 bg-dark text-white'>
                 <h1 className="display-5 fw-bold mb-2">Public RFRs</h1>
                 <div className='container mb-1' >
-                    <AliceCarousel
-                        mouseTracking
-                        items={publicRFRs}
-                        responsive={responsive}
-                        controlsStrategy="alternate"
-                    />
-
+                    <Slider {...settings}>
+                        {publicRFRs.map((q, i) => {
+                            return <div key={i}>{q}</div>
+                        })}
+                    </Slider>
                 </div>
             </div> : <></>}
         </div>

@@ -86,7 +86,7 @@ export default function RFR() {
   return (
     <div className='container mt-5'>
       {sec === 1 && <div className='d-flex justify-content-center'>
-        <form onSubmit={handlesub} style={{ width: "20rem" }} className='bg-white p-3 rounded-3 d-flex gap-3'>
+        <form onSubmit={handlesub} style={{ width: "20rem" }} className='bg-dark p-3 rounded-3 d-flex gap-3'>
           <div>
             <FloatingLabel controlId="floatingInput" label="Enter Code"> <Form.Control value={code} name="rfrCode" type="text" /> </FloatingLabel>
             {err && <div className="text-danger fw-bold">{err}</div>}

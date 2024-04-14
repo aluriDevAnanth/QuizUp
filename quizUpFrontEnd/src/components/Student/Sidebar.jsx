@@ -2,7 +2,7 @@ import React from 'react'
 import { format } from 'date-fns';
 
 export default function Sidebar({ showQuiz, course }) {
-    
+
     return (
         <div>
             <div className="vh-100 sticky-top" style={{ width: '40px' }}>
@@ -14,16 +14,15 @@ export default function Sidebar({ showQuiz, course }) {
 
             <div style={{ width: '18rem' }} className="  text-bg-dark offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabIndex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
                 <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="offcanvasScrollingLabel">Contents</h5>
-                    <button type="button" className="delete is-large btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <h5 className="offcanvas-title fs-2 fw-bold" id="offcanvasScrollingLabel">Contents</h5>
+                    <button type="button" className="delete is-large bg-dark btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div className="offcanvas-body container-fluid">
+                <div data-bd-theme="dark" className="offcanvas-body container-fluid">
                     <ul className="list-unstyled ps-0">
                         {
-                            course.subSec.map(q => {
+                            course.subSec.map((q, i) => {
                                 return <li key={q._id} className="mb-1">
-                                    <button className="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white fs-3" data-bs-toggle="collapse" data-bs-target={`#home-collapse${q._id}`} aria-expanded="false">
-                                        {q.name}
+                                    <button className="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white  " data-bs-toggle="collapse" data-bs-target={`#home-collapse${q._id}`} aria-expanded="false">  <p className='fs-3 me-3'> {q.name}</p> {i === 0 && <span class="badge text-bg-secondary ">Click Me</span>}
                                     </button>
                                     {q.quizzes.map(qq => (
                                         <div className="collapse" id={`home-collapse${q._id}`} key={qq._id}>

@@ -15,6 +15,7 @@ import QuizPage from './components/Student/QuizPage'
 //teacher
 import Dashboard from './components/Teacher/Dashboard'
 import TeacherHeader from './components/Teacher/components/TeacherHeader'
+import TSettings from './components/Teacher/Settings'
 import YourCourses from './components/Teacher/YourCourses'
 
 //context
@@ -26,7 +27,7 @@ function App() {
   const { auth, user } = useContext(AuthCon)
   //console.log(auth, user)
   return (
-    <div data-bs-theme="dark">
+    <div className='text-white' data-bs-theme="dark">
       <Routes>
         <Route path='/' element={auth === undefined ? <UserSignup /> : <></>} />
       </Routes>
@@ -50,6 +51,7 @@ function App() {
         <Routes >
           <Route path='/' element={<Dashboard />} />
           <Route path='/teacher/course' element={<YourCourses />} />
+          <Route path='/settings' element={<TSettings />} />
           <Route path='/teacher/rfr/' element={<YourRFRs />} />
         </Routes>
       </>}

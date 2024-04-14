@@ -13,6 +13,7 @@ const courseSchema = new mongoose.Schema({
     publicc: Boolean,
     des: String,
     subSec: [subSecSchema],
+    users: [String],
     teacher: String,
     start: String,
     exp: String,
