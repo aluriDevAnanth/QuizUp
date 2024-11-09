@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 var jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
 
 // Models
 const RFR = require('../../models/user/RFR');
