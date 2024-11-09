@@ -1,84 +1,73 @@
-# Google Shopping Scraper
-
-This Python script allows you to scrape Google Shopping data for specific products based on configurable options. The script retrieves product names, prices, links, suppliers, and delivery options, saving the data in both Excel and JSON formats for easy analysis.
-
+#  QuizUp
+QuizUp is an innovative web-based platform designed to provide a seamless experience for both students and teachers. The platform offers a dynamic environment where students can engage with educational content through quizzes, courses, and rapid-fire rounds (RFR), while teachers have full control over course creation, quiz management, and student progress monitoring.
+This project is split into two main parts:
+- **Frontend**: Built with React, Vite, and modern web development tools.
+- **Backend**: Built with Node.js, Express, and MongoDB to handle server-side operations and data storage.
 ## Features
-
-### 1. `configChanger` - Configure Search Options
-
-The `configChanger` function allows you to set various search options such as:
-
-- **Minimum Price (`ppr_min`)**: Defines the lowest price range for products to filter in the search.
-- **Maximum Price (`ppr_max`)**: Sets the upper price limit for product searches.
-- **Shipping (`ship`)**: Allows you to specify if the search should include products with free shipping only (`1`) or include all products (`0`).
-- **Product Sorting (`p_ord`)**: Sets the sorting order of the products in the search results:
-  - **`r`** - Sorts by relevance.
-  - **`rv`** - Sorts by review score.
-  - **`p`** - Sorts by price, from low to high.
-  - **`pd`** - Sorts by price, from high to low.
-
-These options are saved in the `config.ini` file, and users can easily modify them through a simple interactive prompt.
-
-### 2. `ext` - Extract Data
-
-The `ext` function performs the actual scraping based on the search term and configuration. Key steps include:
-
-- **Fetching Search Results**: Sends a GET request to Google Shopping with custom headers to retrieve search results for the product keyword.
-- **Parsing HTML Data**: Uses BeautifulSoup to parse the HTML and extract key product information, such as:
-  - **Product Name**
-  - **Price**
-  - **Link to Product**
-  - **Supplier**
-  - **Delivery Information**
-- **Cleaning and Formatting Data**: Processes extracted prices, links, and delivery details, converting prices to integers for easy sorting.
-
-Finally, this function sorts the data by price in ascending order and saves the information in both an Excel file and a JSON file.
-
-### 3. `xl` - Save Data to Excel
-
-The `xl` function generates an Excel file to store the extracted product data in a structured format. Key aspects:
-
-- **File Structure**: The Excel file includes columns for Product Name, Price, Link, Supplier, and Delivery Service.
-- **Data Insertion**: Populates rows with product details, providing a well-organized file for users to view and analyze results.
-- **File Naming**: Names the Excel file based on the search term, creating a unique file for each search.
-
-## Prerequisites
-
-- Python 3.7 or above
-- Packages listed in the `requirements.txt`  file
-
-## Installation
-
-1. Clone the repository:
-   
+### Student Features
+1. **Browse and Participate in Quizzes**:
+   - Students can explore a variety of quizzes across different topics and difficulty levels.
+   - Each quiz consists of multiple-choice questions with immediate feedback on performance.
+   - Quizzes can be taken at any time, and progress is tracked automatically.
+2. **View and Enroll in Courses**:
+   - Students can browse through available courses based on their interests and educational needs.
+   - Once enrolled, students can access course materials, assignments, and resources.
+   - Courses can be categorized by subject, difficulty, or learning objectives.
+3. **Track Course Progress and Quiz Results**:
+   - Students can see their progress within each course, including completed lessons, quizzes, and milestones.
+   - Quiz results are saved and presented in a dashboard format, helping students track their learning progress over time.
+   - Students receive detailed insights into their performance, including correct and incorrect answers.
+4. **Rapid Fire Round (RFR)**:
+   - A unique feature that allows students to engage in a time-pressured quiz environment where they must answer as many questions as possible within a short period.
+   - The RFR is designed to test quick thinking and recall under pressure, making it both fun and challenging.
+   - Students compete against the clock and can challenge themselves to improve their speed and accuracy over time.
+5. **User Profile and Settings**:
+   - Students have personal accounts that store their quiz scores, course progress, and RFR history.
+   - Profile settings allow users to update their details, change passwords, and adjust notification preferences.
+### Teacher Features
+1. **Create and Manage Courses**:
+   - Teachers can create and manage their own courses, including adding lessons, assignments, and other educational content.
+   - Courses are structured with clear learning paths, and teachers can customize the course difficulty and topics.
+   - Teachers can edit or remove existing courses at any time.
+2. **Create and Manage Quizzes**:
+   - Teachers have the ability to create quizzes related to specific courses or standalone quizzes.
+   - The quiz creation interface allows teachers to define questions, set answer options, and configure scoring rules.
+   - Teachers can assign quizzes to students and monitor their progress.
+3. **Manage Student Progress and RFRs**:
+   - Teachers can view detailed reports on student performance, including quiz results, course completion status, and overall progress.
+   - Teachers can track student participation in the Rapid Fire Round (RFR) and analyze their speed and accuracy.
+   - Teachers can also give feedback on student performance, helping them improve their understanding.
+4. **Student Communication**:
+   - Teachers can interact with students directly through the platform, providing feedback, guidance, and support.
+   - Students can ask questions, and teachers can respond either via general course discussions or direct messages.
+5. **Manage RFR Feedback**:
+   - Teachers can view student performance in the Rapid Fire Round (RFR) and provide insights or tips for improvement.
+   - Teachers can track how well students are performing in time-sensitive scenarios and tailor their teaching methods accordingly.
+## Technologies Used
+### Frontend:
+- **React**: A JavaScript library for building user interfaces, used for creating the interactive components of the platform.
+- **Vite**: A modern build tool that offers fast and efficient bundling of the frontend assets.
+- **JSX**: JavaScript XML syntax used to write UI components in a declarative manner.
+- **React Context API**: Used for global state management across different parts of the application.
+- **CSS**: Styling and layout of the web pages, making the platform visually appealing and user-friendly.
+### Backend:
+- **Node.js**: A JavaScript runtime used to build the server-side logic of the platform.
+- **Express**: A minimal web framework for building RESTful APIs.
+- **MongoDB**: NoSQL database used for storing user data, course content, quizzes, and student performance.
+- **Mongoose**: Object Data Modeling (ODM) library for MongoDB, used for defining schemas and interacting with the database.
+- **JWT (JSON Web Tokens)**: Used for secure authentication and user session management.
+## Installation 
++ Clone the repository:
+   ``` 
+   git clone https://github.com/aluriDevAnanth/QuizUp.git 
    ```
-   https://github.com/aluriDevAnanth/WebScrapingGoogleShopping.git
-   ```
-2. Navigate to the project directory.
-3. Install the required packages:
-   
-   ```
-   pip install -r requirements.txt
-   ```
-
-## Usage
-
-1. Open the config.ini file and configure the search options as needed. You can set the minimum price, maximum price, shipping availability, and product sorting.
-2. Install the required packages:
-   
-   ```
-   python gs.py
-   ```
-3. The script will scrape the product information from Google Shopping and save it in both Excel (.xlsx) and JSON (.json) formats. The files will be named based on the search query.
-   
-   - Excel file: data_<search_query>.xlsx
-   - JSON file: data_<search_query>.json
-
-## Contributing
-
-Contributions to this project are welcome. If you encounter any issues or have suggestions for improvements, please create an issue or submit a pull request.
-
-## License
-
-Feel free to customize the content as per your requirements. Make sure to include the appropriate license file (e.g., `LICENSE`) in your repository and update the link in the `README.md` file accordingly.
-
++ Navigate to backend folder
+  ```
+  npm install
+  npm run dev
+  ```
++ Navigate to quizUpFrontEnd folder
+  ```
+  npm install
+  npm run dev
+  ``` 
